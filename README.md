@@ -22,3 +22,5 @@ Below is the required screenshot showing the resource group successfully created
 ![Azure Portal Screenshot](assets/Azure.png)
 
 The screenshot displays a resource group in the Azure portal, containing the created storage account (`marcindemostorage123`) and Key Vault (`marcinkeyvalut`).
+
+## Week 2 – RAG, Langchain & Serverless (15 h)
