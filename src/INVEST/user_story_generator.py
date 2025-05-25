@@ -1,6 +1,8 @@
-from openai import AzureOpenAI
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+from openai import AzureOpenAI
+
 
 load_dotenv()
 
@@ -12,23 +14,32 @@ client = AzureOpenAI(
 
 deployment = "gpt-4o"
 
+
 def zbierz_kontekst_od_uzytkownika():
     """
     Interaktywnie zbiera kontekst projektu od użytkownika przez CLI
     """
     print("=== ZBIERANIE KONTEKSTU PROJEKTU ===")
     print("Odpowiedz na poniższe pytania, aby wygenerować dopasowane user stories:\n")
-    
-    typ_aplikacji = input("1. Jaki typ aplikacji tworzysz? (np. e-commerce B2C, CRM B2B, aplikacja mobilna): ")
-    
-    uzytkownicy = input("2. Kim są główni użytkownicy? (np. klienci kupujący online, administratorzy): ")
-    
-    cele_biznesowe = input("3. Jakie są główne cele biznesowe? (np. zwiększenie konwersji, automatyzacja): ")
-    
-    obszary_funkcjonalne = input("4. Jakie obszary funkcjonalne pokryć? (oddziel przecinkami): ")
-    
+
+    typ_aplikacji = input(
+        "1. Jaki typ aplikacji tworzysz? (np. e-commerce B2C, CRM B2B, aplikacja mobilna): "
+    )
+
+    uzytkownicy = input(
+        "2. Kim są główni użytkownicy? (np. klienci kupujący online, administratorzy): "
+    )
+
+    cele_biznesowe = input(
+        "3. Jakie są główne cele biznesowe? (np. zwiększenie konwersji, automatyzacja): "
+    )
+
+    obszary_funkcjonalne = input(
+        "4. Jakie obszary funkcjonalne pokryć? (oddziel przecinkami): "
+    )
+
     dodatkowe_wymagania = input("5. Dodatkowe wymagania/integracje (opcjonalne): ")
-    
+
     kontekst = f"""
     **KONTEKST PROJEKTU:**
 
@@ -42,8 +53,9 @@ def zbierz_kontekst_od_uzytkownika():
 
     **Dodatkowe wymagania:** {dodatkowe_wymagania if dodatkowe_wymagania else "Brak"}
     """
-    
+
     return kontekst
+
 
 def generuj_user_stories_z_kontekstem(kontekst_uzytkownika):
     prompt_generowanie = f"""
@@ -87,18 +99,15 @@ def generuj_user_stories_z_kontekstem(kontekst_uzytkownika):
     """
 
     try:
-        print("Generowanie user stories na podstawie kontekstu...")   
+        print("Generowanie user stories na podstawie kontekstu...")
         response = client.chat.completions.create(
             model=deployment,
             messages=[
                 {
-                    "role": "system", 
-                    "content": "Jesteś doświadczonym Product Ownerem i Scrum Masterem. Tworzysz wysokiej jakości historie użytkownika zgodne z najlepszymi praktykami Agile i Scrum, dopasowane do konkretnego kontekstu biznesowego. Odpowiadasz w języku polskim."
+                    "role": "system",
+                    "content": "Jesteś doświadczonym Product Ownerem i Scrum Masterem. Tworzysz wysokiej jakości historie użytkownika zgodne z najlepszymi praktykami Agile i Scrum, dopasowane do konkretnego kontekstu biznesowego. Odpowiadasz w języku polskim.",
                 },
-                {
-                    "role": "user", 
-                    "content": prompt_generowanie
-                }
+                {"role": "user", "content": prompt_generowanie},
             ],
             temperature=0.7,
         )
@@ -108,7 +117,8 @@ def generuj_user_stories_z_kontekstem(kontekst_uzytkownika):
         print(f"Błąd podczas generowania user stories: {str(e)}")
         return None
 
-def waliduj_historie_ai(content):    
+
+def waliduj_historie_ai(content):
     prompt_walidacja = f"""
     Jesteś ekspertem od metodyki Agile i Scrum. Twoim zadaniem jest ocena jakości poniższych user stories pod kątem zgodności z kryteriami INVEST i najlepszymi praktykami.
 
@@ -167,24 +177,22 @@ def waliduj_historie_ai(content):
             messages=[
                 {
                     "role": "system",
-                    "content": "Jesteś doświadczonym ekspertem Agile/Scrum ze specjalizacją w ocenie jakości user stories. Twoja analiza jest precyzyjna, konstruktywna i skupiona na praktycznych aspektach realizacji. Odpowiadasz w języku polskim."
+                    "content": "Jesteś doświadczonym ekspertem Agile/Scrum ze specjalizacją w ocenie jakości user stories. Twoja analiza jest precyzyjna, konstruktywna i skupiona na praktycznych aspektach realizacji. Odpowiadasz w języku polskim.",
                 },
-                {
-                    "role": "user",
-                    "content": prompt_walidacja
-                }
+                {"role": "user", "content": prompt_walidacja},
             ],
             temperature=0.3,
         )
-        
+
         return response_walidacja.choices[0].message.content
-        
+
     except Exception as e:
         return f"Błąd podczas walidacji: {str(e)}"
 
+
 def main():
     print("=== GENERATOR USER STORIES Z KONTEKSTEM ===\n")
-    
+
     print("KROK 1: Zbieranie kontekstu projektu")
     print("-" * 40)
 
@@ -201,27 +209,27 @@ def main():
     if not kontekst_uzytkownika:
         print("Błąd podczas zbierania kontekstu. Przerywam wykonanie.")
         return
-    
+
     print("\nZebrany kontekst:")
     print(kontekst_uzytkownika)
-    print("\n" + "="*50)
-    
+    print("\n" + "=" * 50)
+
     print("KROK 2: Generowanie user stories")
     print("-" * 40)
-    
+
     wygenerowane_stories = generuj_user_stories_z_kontekstem(kontekst_uzytkownika)
     if not wygenerowane_stories:
         print("Błąd podczas generowania user stories. Przerywam wykonanie.")
         return
-    
+
     print("=== WYGENEROWANE HISTORIE UŻYTKOWNIKA ===")
     print(wygenerowane_stories)
-    
-    print("\n" + "="*50)
+
+    print("\n" + "=" * 50)
     print("KROK 3: Walidacja AI")
     print("-" * 40)
     print("Trwa analiza przez AI eksperta...")
-    
+
     walidacja_ai = waliduj_historie_ai(wygenerowane_stories)
     print(walidacja_ai)
     print("Wygenerowano walidację AI")
@@ -246,6 +254,7 @@ def main():
         f.write(full_content)
 
     print(f"Historie zapisane")
+
 
 if __name__ == "__main__":
     main()

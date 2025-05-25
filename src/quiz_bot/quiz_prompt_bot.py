@@ -1,10 +1,11 @@
-import os
-from openai import AzureOpenAI
-from dotenv import load_dotenv
-import re
 import hashlib
-import random
 import os
+import random
+import re
+
+from dotenv import load_dotenv
+from openai import AzureOpenAI
+
 
 load_dotenv()
 
@@ -16,11 +17,7 @@ client = AzureOpenAI(
 
 deployment = "gpt-4o"
 
-rewards = {
-    "łatwy": 100,
-    "średni": 500,
-    "trudny": 1000
-}
+rewards = {"łatwy": 100, "średni": 500, "trudny": 1000}
 
 asked_questions = set()
 
@@ -32,21 +29,34 @@ chat_history = [
             "Jesteś kreatywnym botem quizowym. Generuj unikalne, ciekawe i wymagające pytania wielokrotnego wyboru w języku polskim. "
             "Nigdy nie powtarzaj pytania, które już pojawiło się w tej historii czatu. Każde pytanie powinno mieć cztery odpowiedzi (A–D) "
             "i kończyć się wskazaniem poprawnej odpowiedzi w formacie: Odpowiedź: X"
-        )
+        ),
     }
 ]
 
 
 def get_question_hash(question_text: str):
-    words = re.findall(r'\b\w+\b', question_text.lower())
-    key_words = ' '.join(words[:8]) if len(words) >= 8 else ' '.join(words)
+    words = re.findall(r"\b\w+\b", question_text.lower())
+    key_words = " ".join(words[:8]) if len(words) >= 8 else " ".join(words)
     return hashlib.md5(key_words.encode()).hexdigest()
+
 
 def generate_question(difficulty: str, attempt: int = 1):
     topics = [
-        "historia", "geografia", "nauka", "sport", "literatura",
-        "sztuka", "muzyka", "filmy", "natura", "technologia",
-        "astronomia", "medycyna", "kultura", "polityka", "ekonomia"
+        "historia",
+        "geografia",
+        "nauka",
+        "sport",
+        "literatura",
+        "sztuka",
+        "muzyka",
+        "filmy",
+        "natura",
+        "technologia",
+        "astronomia",
+        "medycyna",
+        "kultura",
+        "polityka",
+        "ekonomia",
     ]
 
     topic = random.choice(topics)
@@ -58,30 +68,26 @@ def generate_question(difficulty: str, attempt: int = 1):
         "Na końcu wskaż poprawną odpowiedź w formacie: Odpowiedź: X"
     )
 
-
     chat_history.append({"role": "user", "content": prompt})
 
     # with open("prompts/best.txt", "w", encoding="utf-8") as f:
     #     f.write(prompt)
 
     response = client.chat.completions.create(
-        model=deployment,
-        messages=chat_history,
-        temperature=0.9,
-        max_tokens=500
+        model=deployment, messages=chat_history, temperature=0.9, max_tokens=500
     )
 
     content = response.choices[0].message.content
     chat_history.append({"role": "assistant", "content": content})
 
-
-    match = re.search(r'Odpowiedź:\s*([A-D])', content)
+    match = re.search(r"Odpowiedź:\s*([A-D])", content)
     if not match:
         raise ValueError("Błąd w szukaniu odpowiedzi w wygenerowanym promptcie.")
 
     answer = match.group(1)
-    question_text = re.sub(r'Odpowiedź:\s*[A-D]', '', content).strip()
+    question_text = re.sub(r"Odpowiedź:\s*[A-D]", "", content).strip()
     return question_text, answer
+
 
 def get_unique_question(difficulty: str):
     max_attempts = 5
@@ -94,7 +100,9 @@ def get_unique_question(difficulty: str):
                 print(asked_questions)
                 return question, answer
             else:
-                print(f"Pytanie podobne do wcześniejszego, próba {attempt}/{max_attempts}...")
+                print(
+                    f"Pytanie podobne do wcześniejszego, próba {attempt}/{max_attempts}..."
+                )
         except Exception as e:
             print(f"Błąd w próbie {attempt}: {e}")
     print("Czyszczę historię pytań i próbuję ponownie...")
@@ -102,17 +110,19 @@ def get_unique_question(difficulty: str):
     reset_chat_history()
     return generate_question(difficulty, 1)
 
+
 def reset_chat_history():
     chat_history.clear()
-    chat_history.append({
-        "role": "system",
-        "content": (
-            "Jesteś kreatywnym botem quizowym. Generuj unikalne, ciekawe i wymagające pytania wielokrotnego wyboru w języku polskim. "
-            "Nigdy nie powtarzaj pytania, które już pojawiło się w tej historii czatu. Każde pytanie powinno mieć cztery odpowiedzi (A–D) "
-            "i kończyć się wskazaniem poprawnej odpowiedzi w formacie: Odpowiedź: X"
-        )
-    })
-
+    chat_history.append(
+        {
+            "role": "system",
+            "content": (
+                "Jesteś kreatywnym botem quizowym. Generuj unikalne, ciekawe i wymagające pytania wielokrotnego wyboru w języku polskim. "
+                "Nigdy nie powtarzaj pytania, które już pojawiło się w tej historii czatu. Każde pytanie powinno mieć cztery odpowiedzi (A–D) "
+                "i kończyć się wskazaniem poprawnej odpowiedzi w formacie: Odpowiedź: X"
+            ),
+        }
+    )
 
 
 def main():
@@ -122,7 +132,9 @@ def main():
     question_number = 1
 
     while True:
-        print("\nWybierz poziom trudności (łatwy / średni / trudny), 'Q' aby zakończyć.")
+        print(
+            "\nWybierz poziom trudności (łatwy / średni / trudny), 'Q' aby zakończyć."
+        )
         choice = input("Twój wybór: ").strip().lower()
 
         if choice == "q":
@@ -149,7 +161,9 @@ def main():
             total += earned
             print(f"Poprawnie :D! Zdobywasz {earned} zł. Łącznie: {total} zł.")
         else:
-            print(f"Zła odpowiedź. Poprawna to: {correct}. Przegrałeś kwote: {total} zł.")
+            print(
+                f"Zła odpowiedź. Poprawna to: {correct}. Przegrałeś kwote: {total} zł."
+            )
             print(f"\nKoniec gry! :C Dzięki za grę!")
             break
 

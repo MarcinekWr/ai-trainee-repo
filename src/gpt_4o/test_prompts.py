@@ -1,7 +1,8 @@
-
-from openai import AzureOpenAI
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+from openai import AzureOpenAI
+
 
 load_dotenv()
 
@@ -21,9 +22,9 @@ chat_prompt = [
         "content": [
             {
                 "type": "text",
-                "text": "Czy na juwenaliach we wrocławiu 21 maja 2025 będzie padać?."
+                "text": "Czy na juwenaliach we wrocławiu 21 maja 2025 będzie padać?.",
             }
-        ]
+        ],
     }
 ]
 
@@ -36,7 +37,7 @@ completion = client.chat.completions.create(
     frequency_penalty=0,
     presence_penalty=0,
     stop=None,
-    stream=False
+    stream=False,
 )
 
 print(completion.to_json())
