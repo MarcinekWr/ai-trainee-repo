@@ -1,3 +1,24 @@
+[project]
+name = "gen-ai-trainee"
+version = "1.0.0"
+description = "Resources and code for hands-on learning in Azure-based Generative AI, LLMs, RAG, and engineering best practices."
+requires-python = ">=3.8"
+readme = "README.md"
+keywords = [
+    "LLM",
+    "RAG",
+    "Azure AI",
+    "LangChain",
+    "Streamlit",
+    "Prompt Engineering",
+    "Serverless",
+    "Cost Estimation",
+    "Responsible AI"
+]
+authors = [
+  {name = "Marcin Wróbel", email = "marcinwrobel2002@gmail.com"}
+]
+
 [tool.isort]
 profile = "black"
 line_length = 88
