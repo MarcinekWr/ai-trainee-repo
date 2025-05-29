@@ -4,3 +4,5 @@ venv/
 .env/
 .env
 *.pdf
+venv312/
+src/HTTP_Trigger_app/local.settings.json
