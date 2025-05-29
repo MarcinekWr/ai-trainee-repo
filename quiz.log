@@ -1,0 +1,31 @@
+2025-05-29 02:18:01,135 [INFO] Wybrano trudność: średni
+2025-05-29 02:18:01,135 [INFO] Generuję pytanie (próba 1, trudność: średni, temat: sport)
+2025-05-29 02:18:02,378 [INFO] HTTP Request: POST https://27246-maxs0up6-swedencentral.services.ai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview "HTTP/1.1 200 OK"
+2025-05-29 02:18:02,380 [ERROR] Błąd w próbie 1: Błąd w szukaniu odpowiedzi w wygenerowanym promptcie.
+2025-05-29 02:18:02,381 [INFO] Generuję pytanie (próba 2, trudność: średni, temat: geografia)
+2025-05-29 02:18:03,231 [INFO] HTTP Request: POST https://27246-maxs0up6-swedencentral.services.ai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview "HTTP/1.1 200 OK"
+2025-05-29 02:18:03,232 [ERROR] Błąd w próbie 2: Błąd w szukaniu odpowiedzi w wygenerowanym promptcie.
+2025-05-29 02:18:03,232 [INFO] Generuję pytanie (próba 3, trudność: średni, temat: sztuka)
+2025-05-29 02:18:04,042 [INFO] HTTP Request: POST https://27246-maxs0up6-swedencentral.services.ai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview "HTTP/1.1 200 OK"
+2025-05-29 02:18:04,043 [ERROR] Błąd w próbie 3: Błąd w szukaniu odpowiedzi w wygenerowanym promptcie.
+2025-05-29 02:18:04,043 [INFO] Generuję pytanie (próba 4, trudność: średni, temat: geografia)
+2025-05-29 02:18:04,798 [INFO] HTTP Request: POST https://27246-maxs0up6-swedencentral.services.ai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview "HTTP/1.1 200 OK"
+2025-05-29 02:18:04,798 [ERROR] Błąd w próbie 4: Błąd w szukaniu odpowiedzi w wygenerowanym promptcie.
+2025-05-29 02:18:04,799 [INFO] Generuję pytanie (próba 5, trudność: średni, temat: polityka)
+2025-05-29 02:18:05,611 [INFO] HTTP Request: POST https://27246-maxs0up6-swedencentral.services.ai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview "HTTP/1.1 200 OK"
+2025-05-29 02:18:05,612 [ERROR] Błąd w próbie 5: Błąd w szukaniu odpowiedzi w wygenerowanym promptcie.
+2025-05-29 02:18:05,613 [WARNING] Resetuję historię pytań.
+2025-05-29 02:18:05,613 [INFO] Zresetowano historię czatu.
+2025-05-29 02:18:05,613 [INFO] Generuję pytanie (próba 1, trudność: średni, temat: historia)
+2025-05-29 02:18:06,675 [INFO] HTTP Request: POST https://27246-maxs0up6-swedencentral.services.ai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview "HTTP/1.1 200 OK"
+2025-05-29 02:18:06,676 [INFO] Kod dla prowadzącego: ABCD
+2025-05-29 02:18:24,100 [INFO] Użytkownik odpowiedział: C
+2025-05-29 02:18:24,100 [INFO] Poprawna odpowiedź. Zarobiono 500 zł.
+2025-05-29 02:18:28,349 [INFO] Wybrano trudność: trudny
+2025-05-29 02:18:28,349 [INFO] Generuję pytanie (próba 1, trudność: trudny, temat: nauka)
+2025-05-29 02:18:29,292 [INFO] HTTP Request: POST https://27246-maxs0up6-swedencentral.services.ai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview "HTTP/1.1 200 OK"
+2025-05-29 02:18:29,293 [INFO] Dodano nowe pytanie do zestawu.
+2025-05-29 02:18:29,293 [INFO] Kod dla prowadzącego: ABBD
+2025-05-29 02:18:37,745 [INFO] Użytkownik odpowiedział: B
+2025-05-29 02:18:37,745 [INFO] Poprawna odpowiedź. Zarobiono 1000 zł.
+2025-05-29 02:18:40,460 [INFO] Użytkownik zakończył grę z wynikiem 1500 zł.

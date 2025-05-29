@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import os
 import random
 import re
@@ -6,6 +7,15 @@ import re
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("quiz.log", encoding="utf-8"),
+        logging.StreamHandler(),
+    ],
+)
 
 load_dotenv()
 
@@ -18,9 +28,7 @@ client = AzureOpenAI(
 deployment = "gpt-4o"
 
 rewards = {"łatwy": 100, "średni": 500, "trudny": 1000}
-
 asked_questions = set()
-
 
 chat_history = [
     {
@@ -58,7 +66,6 @@ def generate_question(difficulty: str, attempt: int = 1):
         "polityka",
         "ekonomia",
     ]
-
     topic = random.choice(topics)
 
     prompt = (
@@ -69,9 +76,9 @@ def generate_question(difficulty: str, attempt: int = 1):
     )
 
     chat_history.append({"role": "user", "content": prompt})
-
-    # with open("prompts/best.txt", "w", encoding="utf-8") as f:
-    #     f.write(prompt)
+    logging.info(
+        f"Generuję pytanie (próba {attempt}, trudność: {difficulty}, temat: {topic})"
+    )
 
     response = client.chat.completions.create(
         model=deployment, messages=chat_history, temperature=0.9, max_tokens=500
@@ -97,15 +104,13 @@ def get_unique_question(difficulty: str):
             question_hash = get_question_hash(question)
             if question_hash not in asked_questions:
                 asked_questions.add(question_hash)
-                print(asked_questions)
+                logging.info("Dodano nowe pytanie do zestawu.")
                 return question, answer
             else:
-                print(
-                    f"Pytanie podobne do wcześniejszego, próba {attempt}/{max_attempts}..."
-                )
+                logging.warning(f"Pytanie się powtarza, próba {attempt}/{max_attempts}")
         except Exception as e:
-            print(f"Błąd w próbie {attempt}: {e}")
-    print("Czyszczę historię pytań i próbuję ponownie...")
+            logging.error(f"Błąd w próbie {attempt}: {e}")
+    logging.warning("Resetuję historię pytań.")
     asked_questions.clear()
     reset_chat_history()
     return generate_question(difficulty, 1)
@@ -123,11 +128,11 @@ def reset_chat_history():
             ),
         }
     )
+    logging.info("Zresetowano historię czatu.")
 
 
 def main():
     print("🎉 Witaj w MarcinoQuizjom! 🎉")
-
     total = 0
     question_number = 1
 
@@ -138,31 +143,39 @@ def main():
         choice = input("Twój wybór: ").strip().lower()
 
         if choice == "q":
+            logging.info(f"Użytkownik zakończył grę z wynikiem {total} zł.")
             print(f"\nKoniec gry! Zdobyłeś: {total} zł. Dzięki za grę!")
             break
 
         if choice not in rewards:
+            logging.warning(f"Nieprawidłowy wybór trudności: {choice}")
             print("Nieprawidłowy poziom trudności.")
             continue
 
         try:
+            logging.info(f"Wybrano trudność: {choice}")
             print(f"\nGeneruję unikalne pytanie ({choice})...")
             question, correct = get_unique_question(choice)
+            logging.info(f"Kod dla prowadzącego: AB{correct}D")
         except Exception as e:
+            logging.error(f"Błąd generowania pytania: {e}")
             print(f"Błąd generowania pytania: {e}")
             continue
 
         print(f"\nPytanie {question_number} ({choice}):\n")
         print(question)
         answer = input("Twoja odpowiedź (A/B/C/D): ").strip().upper()
+        logging.info(f"Użytkownik odpowiedział: {answer}")
 
         if answer == correct:
             earned = rewards[choice]
             total += earned
+            logging.info(f"Poprawna odpowiedź. Zarobiono {earned} zł.")
             print(f"Poprawnie :D! Zdobywasz {earned} zł. Łącznie: {total} zł.")
         else:
+            logging.info(f"Zła odpowiedź: {answer}. Prawidłowa: {correct}.")
             print(
-                f"Zła odpowiedź. Poprawna to: {correct}. Przegrałeś kwote: {total} zł."
+                f"Zła odpowiedź. Poprawna to: {correct}. Przegrałeś kwotę: {total} zł."
             )
             print(f"\nKoniec gry! :C Dzięki za grę!")
             break
