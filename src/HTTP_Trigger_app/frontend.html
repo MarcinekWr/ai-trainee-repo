@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>RAG – Zadawanie pytań</title>
+</head>
+<body>
+  <h1>Zapytaj dokument</h1>
+
+  <input type="text" id="question" placeholder="Wpisz pytanie..." style="width: 300px;">
+  <button onclick="sendQuery()">Wyślij</button>
+
+  <div id="output" style="margin-top: 20px;">
+  <h2>Odpowiedź:</h2>
+  <p><strong>Pytanie:</strong> <span id="questionText"></span></p>
+  <p><strong>Odpowiedź:</strong></p>
+  <div id="answerBox" style="padding: 10px; border: 1px solid #ccc; background: #f9f9f9;"></div>
+  <details style="margin-top: 10px;">
+    <summary><strong>Źródłowy kontekst</strong></summary>
+    <pre id="contextBox" style="white-space: pre-wrap;"></pre>
+  </details>
+</div>
+
+
+  <script>
+    async function sendQuery() {
+      const question = document.getElementById("question").value;
+
+      const response = await fetch("http://localhost:7071/api/ask_rag", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ query: question })
+      });
+
+      if (!response.ok) {
+        document.getElementById("output").innerHTML = "<p style='color: red;'>Wystąpił błąd podczas pobierania odpowiedzi.</p>";
+        return;
+      }
+
+      const data = await response.json();
+
+      document.getElementById("questionText").textContent = data.data.question;
+      document.getElementById("answerBox").textContent = data.data.answer;
+      document.getElementById("contextBox").textContent = data.data.source_context;
+    }
+
+  </script>
+</body>
+</html>

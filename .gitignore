@@ -6,3 +6,7 @@ venv/
 *.pdf
 venv312/
 src/HTTP_Trigger_app/local.settings.json
+**/.coverage
+htmlcov/
+.cache/
+.mypy_cache/
