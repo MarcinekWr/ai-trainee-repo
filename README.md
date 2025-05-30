@@ -1,26 +1,107 @@
-# Gen AI Trainee Project
+# Gen AI Trainee Project – Azure, LangChain & RAG
 
-## 📁 `src/` Directory Structure
+This project is a step-by-step training path covering Gen AI, LangChain, Azure Functions, and RAG (Retrieval-Augmented Generation) with hands-on micro-deliverables.
 
-The project follows a `src-layout` structure, allowing for a logical separation of modules and easier scalability in future weeks.
-
-| Folder            | Contents and Purpose | Related Task |
-|-------------------|----------------------|--------------|
-| `gpt-4o/`          | Code for interacting with GPT-4o, executing 3 prompt tests, and logging token usage and costs to `/logs/usage.md`. | Deploy GPT-4o, run prompts, log usage |
-| `INVEST/`          | Generator for INVEST-compliant user stories, with output saved to `/backlog/sprint1.md`. | Draft INVEST user stories |
-| `quiz-bot/`        | Prompt and CLI game implemented in Python. | Craft a quiz-bot prompt, CLI game |
-| `trainee_project/` | Base folder for initializing the repository, project structure, and environment setup. | Create GitHub repository & Python project structure |
+The repository follows the `src-layout` structure, with separate folders for each task/stage.
 
 ---
 
-## Week 1 – Azure & LLM Foundations (15 h)
+## 📁 Directory Structure
 
-### Tue 2 – Azure Resource Deployment
+```bash
+AI-TRAINEE-REPO/
+├── assets/               
+├── backlog/              
+├── logs/                 
+├── notebooks/            
+├── prompts/              
+├── src/
+│   ├── gpt_4o/           # Prompts + GPT-4o token usage logging
+│   ├── HTTP_Trigger_app/ # Azure Functions: ask_rag, raise_error, upload_doc
+│   ├── LangChain/        # LangChain-based experiments
+│   ├── INVEST/           # User story generator with acceptance criteria
+│   ├── quiz_bot/         # Prompt + CLI game
+│   └── RAG_fundaments/   # Chunking, embedding, semantic search, indexing
+```
 
-Below is the required screenshot showing the resource group successfully created in the Azure Portal:
+---
 
-![Azure Portal Screenshot](assets/Azure.png)
+## 🧠 Interactive RAG App built with LangChain + Azure + Streamlit
 
-The screenshot displays a resource group in the Azure portal, containing the created storage account (`marcindemostorage123`) and Key Vault (`marcinkeyvalut`).
+Below are screenshots illustrating the full working solution:
 
-## Week 2 – RAG, Langchain & Serverless (15 h)
+| Screenshot | Description |
+|-----------|-------------|
+| ![mainpage](src/HTTP_Trigger_app/photos/mainpage.png) | Main Streamlit UI – dashboard with options to run queries, upload documents, and trigger errors |
+| ![doc_save](src/HTTP_Trigger_app/photos/doc_save.png) | Uploading new documents directly from the frontend to the RAG index |
+| ![ask_rag_dubai](src/HTTP_Trigger_app/photos/ask_rag_dubai.png) | Query interface connected to the RAG pipeline (Streamlit → Azure Function → LangChain → Azure AI Search + LLM) |
+| ![raise_error](src/HTTP_Trigger_app/photos/raise_error.png) | Button triggering a test exception that is logged with `logger.exception` and `traceId` in Azure Application Insights |
+| ![request](src/HTTP_Trigger_app/photos/request.png) | Azure Application Insights logs showing function calls (`ask_rag`, `upload_doc`, `raise_error`) with traceability via `success`, `resultCode`, and `id` columns. Useful for debugging and end-to-end request tracking. |
+
+---
+
+## 🔐 Required Environment Variables (.env)
+
+To run the application locally or in the cloud, create a `.env` file with the following variables:
+
+<details>
+<summary>Click to expand a sample `.env` file</summary>
+
+```env
+# Azure OpenAI
+API_KEY=...
+API_BASE=https://<your-endpoint>.openai.azure.com
+API_VERSION=2025-01-01-preview
+DEPLOYMENT_NAME=gpt-4o
+
+# Embedding
+DEPLOYMENT_NAME_FOR_EMBEDDINGS=text-embedding-ada-002
+EMBEDDING_MODEL_NAME=text-embedding-ada-002
+
+# Azure AI Search (vector index)
+INDEX_NAME=index-marcin
+URL_RAG=https://rag-marcin.search.windows.net
+API_KEY_SEARCH=...
+
+# Azure AI Search (semantic index)
+INDEX_NAME_SEM=rag-marcin-sem
+URL_RAG_SEM=https://rag-marcin-sem.search.windows.net
+API_KEY_SEARCH_SEM=...
+
+# Chat model
+CHAT_DEPLOYMENT_NAME=gpt-4o
+CHAT_MODEL_NAME=gpt-4o
+
+# Azure Functions – HTTP Trigger endpoints
+AZURE_FUNCTION_URL=https://<your-app>.azurewebsites.net/api/ask_rag
+AZURE_FUNCTION_KEY=...
+
+UPLOAD_FUNCTION_URL=https://<your-app>.azurewebsites.net/api/upload_doc
+UPLOAD_FUNCTION_KEY=...
+
+RAISE_ERROR_URL=https://<your-app>.azurewebsites.net/api/raise_error
+RAISE_ERROR_KEY=...
+```
+</details>
+
+---
+
+## 🚀 How to Run Locally
+
+```bash
+# activate virtual environment
+source venv312/bin/activate
+
+# install dependencies
+pip install -r requirements.txt
+
+# run backend (Azure Function) or frontend (Streamlit)
+func start                     # Azure Function
+streamlit run src/HTTP_Trigger_app/frontend.py  # Streamlit app
+```
+
+---
+
+### 🎮 Quiz Bot
+
+...

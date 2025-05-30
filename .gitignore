@@ -10,3 +10,6 @@ src/HTTP_Trigger_app/local.settings.json
 htmlcov/
 .cache/
 .mypy_cache/
+.vscode
+src/HTTP_Trigger_app/.venv
+.pytest_cache

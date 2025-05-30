@@ -4,3 +4,6 @@ azure-core
 langchain-core
 langchain-openai
 python-dotenv
+openai
+langchain-community
+pypdf
