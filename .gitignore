@@ -13,3 +13,6 @@ htmlcov/
 .vscode
 src/HTTP_Trigger_app/.venv
 .pytest_cache
+.langgraph_api
+LangGraph_example_file
+.langgraph_api
