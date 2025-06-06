@@ -100,8 +100,13 @@ func start                     # Azure Function
 streamlit run src/HTTP_Trigger_app/frontend.py  # Streamlit app
 ```
 
----
+### Estimation cost
+![Estymacja kosztów](assets/image.png)
 
-### 🎮 Quiz Bot
 
-...
+The chart above presents the estimated monthly cost of running a production-ready Retrieval-Augmented Generation (RAG) system on Microsoft Azure. It includes all essential infrastructure components required for a startup-level deployment: GPT-4o language model, Ada embeddings, Azure AI Search (S1), Azure Functions for backend APIs, App Service (Linux) for hosting the frontend, Storage Account for document handling, and monitoring with Application Insights.
+
+**Total estimated monthly cost: ~\$345**
+
+
+
