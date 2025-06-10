@@ -1,6 +1,9 @@
 # Gen AI Trainee Project – Azure, LangChain & RAG
 
-This project is a step-by-step training path covering Gen AI, LangChain, Azure Functions, and RAG (Retrieval-Augmented Generation) with hands-on micro-deliverables.
+
+Welcome to the **Gen AI Trainee Project**! This repository is my comprehensive implementation and practical summary of the tasks performed during my Generative AI training program. This project is designed to provide a step-by-step journey into Gen AI, LangChain, Azure Functions, RAG (Retrieval-Augmented Generation) techniques, LLM, and **prompt engineering** through hands-on, micro-deliverable assignments.
+
+The primary goal of this project is to showcase the practical application and integration of the latest AI technologies, including Microsoft Azure and popular libraries like LangChain. This repository offers insight into the process of building a real-world AI application, emphasizing not only the technical implementation but also the **art and science of crafting effective prompts** for large language models.
 
 The repository follows the `src-layout` structure, with separate folders for each task/stage.
 
@@ -16,6 +19,7 @@ AI-TRAINEE-REPO/
 ├── notebooks/            
 ├── prompts/              
 ├── src/
+│   ├── Agents/           # LangGraph agents with Azure Content Safety, and blocked terms
 │   ├── gpt_4o/           # Prompts + GPT-4o token usage logging
 │   ├── HTTP_Trigger_app/ # Azure Functions: ask_rag, raise_error, upload_doc
 │   ├── LangChain/        # LangChain-based experiments
@@ -37,6 +41,17 @@ Below are screenshots illustrating the full working solution:
 | ![ask_rag_dubai](src/HTTP_Trigger_app/photos/ask_rag_dubai.png) | Query interface connected to the RAG pipeline (Streamlit → Azure Function → LangChain → Azure AI Search + LLM) |
 | ![raise_error](src/HTTP_Trigger_app/photos/raise_error.png) | Button triggering a test exception that is logged with `logger.exception` and `traceId` in Azure Application Insights |
 | ![request](src/HTTP_Trigger_app/photos/request.png) | Azure Application Insights logs showing function calls (`ask_rag`, `upload_doc`, `raise_error`) with traceability via `success`, `resultCode`, and `id` columns. Useful for debugging and end-to-end request tracking. |
+
+---
+
+
+### Estimation cost
+![Estymacja kosztów](assets/image.png)
+
+
+The chart above presents the estimated monthly cost of running a production-ready Retrieval-Augmented Generation (RAG) system on Microsoft Azure. It includes all essential infrastructure components required for a startup-level deployment: GPT-4o language model, Ada embeddings, Azure AI Search (S1), Azure Functions for backend APIs, App Service (Linux) for hosting the frontend, Storage Account for document handling, and monitoring with Application Insights.
+
+**Total estimated monthly cost: ~\$345**
 
 ---
 
@@ -99,14 +114,6 @@ pip install -r requirements.txt
 func start                     # Azure Function
 streamlit run src/HTTP_Trigger_app/frontend.py  # Streamlit app
 ```
-
-### Estimation cost
-![Estymacja kosztów](assets/image.png)
-
-
-The chart above presents the estimated monthly cost of running a production-ready Retrieval-Augmented Generation (RAG) system on Microsoft Azure. It includes all essential infrastructure components required for a startup-level deployment: GPT-4o language model, Ada embeddings, Azure AI Search (S1), Azure Functions for backend APIs, App Service (Linux) for hosting the frontend, Storage Account for document handling, and monitoring with Application Insights.
-
-**Total estimated monthly cost: ~\$345**
 
 
 
